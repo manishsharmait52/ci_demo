@@ -1,19 +1,40 @@
-<?php $this->view('comman/hearder.php'); ?>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>User Registration</title>
+	<link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/bootstrap.min.css">
+	<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url(); ?>assets/css/style.css"> -->
+	<link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro|Open+Sans+Condensed:300|Raleway' rel='stylesheet' type='text/css'>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/js/jquery.validate.min.js"></script>
+	<script src="<?php echo base_url(); ?>assets/js/common.js"></script>
+</head>
+<body>
+	<?php
+
+		if (isset($this->session->userdata['logged_in'])) {
+			header("location: ".base_url()."admin/admin_page/");
+
+		}
+	?>
+
+<div class="container">
 
 		<script type="text/javascript">
-			$( document ).ready(function() {
-	    		$('form').attr('autocomplete', 'off');
-	    		$('input').attr('autocomplete', 'off');
+			jQuery( document ).ready(function() {
+	    		jQuery('form').attr('autocomplete', 'off');
+	    		jQuery('input').attr('autocomplete', 'off');
 			});
 		</script>
-		<h1 class="page-header text-center">Add Item</h1>
+		<h1 class="page-header text-center">User Registration</h1>
 		<div class="row">
 			<div class="col-sm-4 col-sm-offset-4">
-				<h3>Add Item
+				<h3>User Registration
 					<span class="pull-right"><a href="<?php echo base_url().'userauthentication/user_login_process'; ?>" class="btn btn-primary"><span class="glyphicon glyphicon-arrow-left"></span> Back</a></span>
 				</h3>
 				<hr>
-				<form method="post" action="<?php echo base_url(); ?>userauthentication/new_user_registration" accept-charset="utf-8">
+				<form method="post" id="registration" action="<?php echo base_url(); ?>userauthentication/new_user_registration" accept-charset="utf-8">
 					<div class="form-group">
 						<label>Username:</label>
 						<input type="text" class="form-control" name="username" value=""  />

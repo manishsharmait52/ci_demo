@@ -6,7 +6,7 @@ Class Items extends CI_Controller {
 
 	public function __construct() {
 		parent::__construct();
-
+		check_login();
 		// Load form helper library
 		$this->load->helper('form');
 		// Load database

@@ -39,6 +39,13 @@ Class Userauthentication extends CI_Controller {
 			'user_email' => $this->input->post('email_value'),
 			'user_password' => md5($this->input->post('password'))
 			);
+			/*Send email*/
+
+			//$to_user = NULL, $to_subject = NULL, $to_message = NULL, $attachment = NULL, $from = NULL, $newFileName = NULL, $forgot_link = NULL
+			
+			/*sendEmail('Email.com','Test','test email',Null,'demo@ci.com');
+			exit;*/
+
 			$result = $this->login_database->registration_insert($data);
 			if ($result == TRUE) {
 				$data['message_display'] = 'Registration Successfully !';
@@ -100,6 +107,44 @@ Class Userauthentication extends CI_Controller {
 		$data['message_display'] = 'Successfully Logout';
 		$this->load->view('users/login_form', $data);
 	}
+
+	public function sendForgotLink() {
+		$print_demo = $this->login_database->sendForgotLink();
+		echo $print_demo;
+	}
+
+	/*Function:
+   	* Name: resetPassword()
+   	* Parameters: We will pass here reset token & new password in hidden
+   	* Response: - return TRUE OR FALSE after validate token
+   	* Description: This function is used for reset password feature, if token valid & exist then we will send update the new password
+   	*/	
+	public function resetPassword(){
+		$token = $this->input->get('resetcode');
+		
+		$userDetails = $this->admin_model->selectRecords('users', array('reset_verifycode' => $token),array('user_id','company_id','fname','lname','company_code'));
+		$user = $userDetails[0];
+		
+		$current_user_full_name = $user['fname'] . " " . $user['lname'];
+		$log_message = '<b>' . $current_user_full_name.' ('.$user['company_code'].')'. '</b> has reset password.';
+		$log_data = array(
+					'user_id' => $user['user_id'],
+					'log_message' => $log_message,
+					'module' => '37',
+					'module_name'=>'User Management',
+					'company_id'=>$user['company_id'],
+					'created' => CURRENT_DATE_TIME,
+					'modified' => CURRENT_DATE_TIME,
+					'edit_record_id'=>''
+		);
+		add_system_log($log_data);
+		$result = $this->Auth_model->resetPassword();
+		
+        echo json_encode($result);	
+
+	}
+
+	
 
 }
 
